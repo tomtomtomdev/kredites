@@ -13,6 +13,7 @@ struct PulsaDataScreen: View {
     @State private var navigation = [NavigationRoute]()
     @State private var showList = false
     @State private var phone = ""
+    @State private var selectedVoucher: Voucher?
     
     var body: some View {
                 
@@ -57,10 +58,16 @@ struct PulsaDataScreen: View {
                     StatusScreen(phone: phone)
                 
                 case .transaction:
-                    TransactionScreen(phone: phone, path: $navigation)
+                    TransactionScreen(
+                        phone: phone,
+                        path: $navigation,
+                        selectedVoucher: $selectedVoucher)
                     
                 case .voucher:
-                    VoucherScreen()
+                    VoucherScreen(
+                        path: $navigation,
+                        selectedVoucher: $selectedVoucher
+                    )
                 }
             }
         }

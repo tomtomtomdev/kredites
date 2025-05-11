@@ -13,6 +13,7 @@ struct TransactionScreen: View {
     @StateObject private var statusLoader = GetStatus()
     @State private var pin = ""
     @Binding var path: [NavigationRoute]
+    @Binding var selectedVoucher: Voucher?
     
     var body: some View {
         
@@ -68,7 +69,12 @@ struct TransactionScreen: View {
                     .padding(.horizontal, .medium)
                     .padding(.top, .medium)
                 
-                VoucherInput(path: $path)
+                if let selectedVoucher {
+                    VoucherAssigned(voucher: $selectedVoucher)
+                    
+                } else {
+                    VoucherInput(path: $path)
+                }
                 
                 Rectangle()
                     .fill(.lightGray)

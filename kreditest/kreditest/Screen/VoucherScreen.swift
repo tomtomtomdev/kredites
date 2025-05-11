@@ -10,6 +10,8 @@ import SwiftUI
 struct VoucherScreen: View {
     
     @StateObject private var getVoucher = GetPromo()
+    @Binding var path: [NavigationRoute]
+    @Binding var selectedVoucher: Voucher?
     
     var body: some View {
         
@@ -19,7 +21,10 @@ struct VoucherScreen: View {
                 
                 ForEach(getVoucher.vouchers, id: \.id) { each in
                     
-                    VoucherCard(voucher: each)
+                    VoucherCard(
+                        voucher: each,
+                        path: $path,
+                        selectedVoucher: $selectedVoucher)
                 }
             }
             .onAppear {

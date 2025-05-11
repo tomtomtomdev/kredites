@@ -10,6 +10,8 @@ import SwiftUI
 struct VoucherCard: View {
     
     let voucher: Voucher
+    @Binding var path: [NavigationRoute]
+    @Binding var selectedVoucher: Voucher?
     
     var body: some View {
         
@@ -44,6 +46,8 @@ struct VoucherCard: View {
                     Spacer()
                     
                     Button {
+                        selectedVoucher = voucher
+                        path.removeLast()
                         
                     } label: {
                         Text("Pakai")

@@ -12,4 +12,6 @@ extension ShapeStyle where Self == Color {
     static var veryLightGray: Color { .gray.opacity(0.2) }
     static var lightBlue: Color { .blue.opacity(0.7) }
     static var veryLightBlue: Color { .blue.opacity(0.1) }
+    static var veryLightGreen: Color { .green.opacity(0.2) }
+    static var lightGreen: Color { .green.opacity(0.5) }
 }
