@@ -10,13 +10,13 @@ import SwiftUI
 
 struct PulsaDataScreen: View {
     
-    @State private var navigating = false
+    @State private var navigation = [NavigationRoute]()
     @State private var showList = false
     @State private var phone = ""
     
     var body: some View {
                 
-        NavigationStack {
+        NavigationStack(path: $navigation) {
             VStack {
                 
                 TitleBar(title: "Top Up")
@@ -35,7 +35,7 @@ struct PulsaDataScreen: View {
                     
                     if showList {
                         PriceList(
-                            navigating: $navigating)
+                            navigation: $navigation)
                         
                         Rectangle()
                             .fill(.lightGray)
@@ -50,9 +50,18 @@ struct PulsaDataScreen: View {
                     PromoStack()
                 }
             }
-            .navigationDestination(isPresented: $navigating) {
+            .navigationDestination(for: NavigationRoute.self){ value in
                 
-                TransactionScreen(phone: phone)
+                switch value {
+                case .status:
+                    StatusScreen(phone: phone)
+                
+                case .transaction:
+                    TransactionScreen(phone: phone, path: $navigation)
+                    
+                case .voucher:
+                    VoucherScreen()
+                }
             }
         }
     }

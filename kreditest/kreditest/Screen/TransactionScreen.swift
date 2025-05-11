@@ -12,113 +12,106 @@ struct TransactionScreen: View {
     let phone: String
     @StateObject private var statusLoader = GetStatus()
     @State private var pin = ""
-    @State private var presentVoucherScreen = false
-
+    @Binding var path: [NavigationRoute]
+    
     var body: some View {
         
-        NavigationStack {
-        
-            VStack {
-                ScrollView(.vertical) {
-                    
-                    TransactionHeader(
-                        phone: phone,
-                        context: statusLoader.status?.transaction_context)
-                    
-                    Rectangle()
-                        .fill(.lightGray)
-                        .frame(height: 10)
-                        .frame(maxWidth: .infinity)
-                    
-                    Text("Rincian Pembayaran")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.caption)
-                        .foregroundStyle(.gray)
-                        .bold()
-                        .padding(.medium)
-                    
-                    ForEach(
-                        statusLoader.status?
-                            .transaction_context.item_list ?? [],
-                        id: \.sku)
-                    { each in
-                        
-                        HStack {
-                            Text(each.name)
-                                .font(.caption)
-                                .foregroundStyle(.gray)
-                            
-                            Spacer()
-                            
-                            Text("Rp\(each.total_amount)")
-                                .font(.caption)
-                                .foregroundStyle(.gray)
-                        }
-                        .padding(.medium)
-                    }
-                    
-                    Rectangle()
-                        .fill(.lightGray)
-                        .frame(height: 10)
-                        .frame(maxWidth: .infinity)
-                    
-                    Text("Voucher")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.caption)
-                        .foregroundStyle(.gray)
-                        .bold()
-                        .padding(.horizontal, .medium)
-                        .padding(.top, .medium)
-                    
-                    VoucherInput(
-                        presentVoucherScreen: $presentVoucherScreen)
-                    
-                    Rectangle()
-                        .fill(.lightGray)
-                        .frame(height: 10)
-                        .frame(maxWidth: .infinity)
-                    
-                    Text("PIN Kredivo")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.caption)
-                        .foregroundStyle(.gray)
-                        .bold()
-                        .padding(.medium)
-                    
-                    PinInput(text: $pin)
-                    
-                    (
-                        Text("Dengan melanjutkan saya setuju dengan ")
-                            .font(.caption)
-                            .foregroundStyle(.lightGray) +
-                        Text("Perjanjian Pinjaman Kredivo")
-                            .font(.caption)
-                            .foregroundStyle(.lightBlue)
-                            .bold()
-                    )
+        VStack {
+            ScrollView(.vertical) {
+                
+                TransactionHeader(
+                    phone: phone,
+                    context: statusLoader.status?.transaction_context)
+                
+                Rectangle()
+                    .fill(.lightGray)
+                    .frame(height: 10)
+                    .frame(maxWidth: .infinity)
+                
+                Text("Rincian Pembayaran")
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.caption)
+                    .foregroundStyle(.gray)
+                    .bold()
                     .padding(.medium)
+                
+                ForEach(
+                    statusLoader.status?
+                        .transaction_context.item_list ?? [],
+                    id: \.sku)
+                { each in
                     
+                    HStack {
+                        Text(each.name)
+                            .font(.caption)
+                            .foregroundStyle(.gray)
+                        
+                        Spacer()
+                        
+                        Text("Rp\(each.total_amount)")
+                            .font(.caption)
+                            .foregroundStyle(.gray)
+                    }
+                    .padding(.medium)
                 }
                 
-                NavigationLink {
-                    StatusScreen(phone: phone)
-                    
-                } label: {
-                    
-                    Text("Bayar")
-                        .foregroundStyle(.white)
-                        .font(.title3)
+                Rectangle()
+                    .fill(.lightGray)
+                    .frame(height: 10)
+                    .frame(maxWidth: .infinity)
+                
+                Text("Voucher")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.caption)
+                    .foregroundStyle(.gray)
+                    .bold()
+                    .padding(.horizontal, .medium)
+                    .padding(.top, .medium)
+                
+                VoucherInput(path: $path)
+                
+                Rectangle()
+                    .fill(.lightGray)
+                    .frame(height: 10)
+                    .frame(maxWidth: .infinity)
+                
+                Text("PIN Kredivo")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.caption)
+                    .foregroundStyle(.gray)
+                    .bold()
+                    .padding(.medium)
+                
+                PinInput(text: $pin)
+                
+                (
+                    Text("Dengan melanjutkan saya setuju dengan ")
+                        .font(.caption)
+                        .foregroundStyle(.lightGray) +
+                    Text("Perjanjian Pinjaman Kredivo")
+                        .font(.caption)
+                        .foregroundStyle(.lightBlue)
                         .bold()
-                        .padding(.large)
-                        .frame(maxWidth: .infinity)
-                        .background(Color.orange)
-                }
-
+                )
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.medium)
+                
             }
-            .navigationDestination(isPresented: $presentVoucherScreen) {
-                VoucherScreen()
+            
+            Button {
+                path.append(.status)
+                
+            } label: {
+                
+                Text("Bayar")
+                    .foregroundStyle(.white)
+                    .font(.title3)
+                    .bold()
+                    .padding(.large)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.orange)
             }
+            
         }
         .navigationTitle("Konfirmasi Pembayaran")
         .onAppear {

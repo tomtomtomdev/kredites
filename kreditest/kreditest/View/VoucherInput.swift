@@ -9,7 +9,7 @@ import SwiftUI
 
 struct VoucherInput: View {
     
-    @Binding var presentVoucherScreen: Bool
+    @Binding var path: [NavigationRoute]
     
     var body: some View {
         
@@ -32,7 +32,7 @@ struct VoucherInput: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             Button {
-                presentVoucherScreen = true
+                path.append(.voucher)
                 
             } label: {
                 

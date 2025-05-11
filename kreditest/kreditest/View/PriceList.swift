@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PriceList: View {
     
-    @Binding var navigating: Bool
+    @Binding var navigation: [NavigationRoute]
     @StateObject private var pulsaLoader = GetPulsa()
     
     var body: some View {
@@ -20,7 +20,7 @@ struct PriceList: View {
                 
                 PriceChoice(
                     product: each,
-                    navigating: $navigating)
+                    navigation: $navigation)
             }
         }
         .onAppear {

@@ -10,7 +10,7 @@ import SwiftUI
 struct PriceChoice: View {
     
     let product: Product
-    @Binding var navigating: Bool
+    @Binding var navigation: [NavigationRoute]
     
     var body: some View {
         
@@ -30,7 +30,7 @@ struct PriceChoice: View {
                 Spacer()
                 
                 Button {
-                    navigating = true
+                    navigation.append(.transaction)
                     
                 } label: {
                     Text("Rp \(Abbreviator(number: product.price).result)")
