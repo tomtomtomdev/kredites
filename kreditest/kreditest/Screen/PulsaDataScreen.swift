@@ -55,7 +55,9 @@ struct PulsaDataScreen: View {
                 
                 switch value {
                 case .status:
-                    StatusScreen(phone: phone)
+                    StatusScreen(
+                        phone: phone,
+                        path: $navigation)
                 
                 case .transaction:
                     TransactionScreen(

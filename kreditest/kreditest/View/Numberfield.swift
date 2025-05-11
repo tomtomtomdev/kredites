@@ -36,7 +36,7 @@ struct Numberfield: View {
             Image(systemName: "person.crop.rectangle.stack.fill")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 20, height: 20)
+                .frame(width: 16, height: 16)
         }
     }
 }

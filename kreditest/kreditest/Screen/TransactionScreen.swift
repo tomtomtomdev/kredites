@@ -10,10 +10,12 @@ import SwiftUI
 struct TransactionScreen: View {
     
     let phone: String
-    @StateObject private var statusLoader = GetStatus()
-    @State private var pin = ""
     @Binding var path: [NavigationRoute]
     @Binding var selectedVoucher: Voucher?
+    
+    @StateObject private var statusLoader = GetStatus()
+    @State private var pin = ""
+    @State private var showErrorPin = false
     
     var body: some View {
         
@@ -69,11 +71,11 @@ struct TransactionScreen: View {
                     .padding(.horizontal, .medium)
                     .padding(.top, .medium)
                 
-                if let selectedVoucher {
-                    VoucherAssigned(voucher: $selectedVoucher)
+                if selectedVoucher == nil {
+                    VoucherInput(path: $path)
                     
                 } else {
-                    VoucherInput(path: $path)
+                    VoucherAssigned(voucher: $selectedVoucher)
                 }
                 
                 Rectangle()
@@ -89,6 +91,19 @@ struct TransactionScreen: View {
                     .padding(.medium)
                 
                 PinInput(text: $pin)
+                    .onChange(of: pin) { oldValue, newValue in
+                        if newValue.count >= 6 {
+                            showErrorPin = false
+                        }
+                    }
+                
+                if showErrorPin {
+                    Text("Mohon masukkan PIN anda dengan benar.")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.medium)
+                }
                 
                 (
                     Text("Dengan melanjutkan saya setuju dengan ")
@@ -105,7 +120,14 @@ struct TransactionScreen: View {
             }
             
             Button {
-                path.append(.status)
+                if pin.count >= 6 {
+                    path.append(.status)
+                    showErrorPin = false
+                    
+                } else {
+                    
+                    showErrorPin = true
+                }
                 
             } label: {
                 

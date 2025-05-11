@@ -11,15 +11,31 @@ struct PinInput: View {
     
     @Binding var text: String
     
+    @State private var hidden = false
+    
     var body: some View {
         
         HStack {
-            TextField("", text: $text)
-                .frame(maxWidth: .infinity)
+            if hidden {
+                SecureField("", text: $text)
+                    .font(.caption)
+                    .frame(maxWidth: .infinity)
+                
+            } else {
+                
+                TextField("", text: $text)
+                    .font(.caption)
+                    .frame(maxWidth: .infinity)
+            }
             
-            Image(systemName: "eye")
-                .resizable()
-                .frame(width: 24, height: 18)
+            Button {
+                hidden.toggle()
+                
+            } label: {
+                Image(systemName: hidden ? "eye.slash" : "eye")
+                    .resizable()
+                    .frame(width: 24, height: 18)
+            }
         }
         .padding(.medium)
         .overlay(

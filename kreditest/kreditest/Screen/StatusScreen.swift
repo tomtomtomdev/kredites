@@ -9,8 +9,9 @@ import SwiftUI
 
 struct StatusScreen: View {
     
-    let phone: String
+    var phone: String
     @StateObject private var getStatus = GetStatus()
+    @Binding var path: [NavigationRoute]
     
     var body: some View {
         
@@ -37,12 +38,13 @@ struct StatusScreen: View {
             
             Spacer()
             
-            NavigationLink {
+            Button {
+                path.removeAll()
                 
             } label: {
                 
                 Text("Oke")
-                    .font(.caption)
+                    .font(.title3)
                     .foregroundStyle(.white)
                     .padding(.large)
                     .frame(maxWidth: .infinity)
